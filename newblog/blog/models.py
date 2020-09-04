@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 # Create your models here.
 
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
-        ('puvlished', 'Published'),
+        ('published', 'Published'),
     )
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique_for_date='publish')
@@ -23,5 +23,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:detail_view', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
+    
 
         
